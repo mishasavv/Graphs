@@ -1,4 +1,5 @@
 import java.util.*;
+
 import java.io.*;
 
 /**
@@ -72,7 +73,15 @@ public class FindPaths {
 				System.exit(3);
 			}
 		}
-
-		return new MyGraph(v,e);
+		
+		try {
+			return new MyGraph(v,e);
+		} catch (IllegalWeightException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalVertexException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }

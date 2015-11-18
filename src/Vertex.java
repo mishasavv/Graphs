@@ -1,8 +1,10 @@
 /**
  * Representation of a graph vertex
  */
-public class Vertex {
+public class Vertex implements Comparable<Vertex> {
 	private final String label;   // label attached to this vertex
+	private Edge path;
+	private int pathValue;
 
 	/**
 	 * Construct a new vertex
@@ -12,6 +14,7 @@ public class Vertex {
 		if(label == null)
 			throw new IllegalArgumentException("null");
 		this.label = label;
+		this.path = null;
 	}
 
 	/**
@@ -53,6 +56,17 @@ public class Vertex {
 		    return label.equals(other.label);
 		}
 	}
-
+	
+	public int getPathValue() {
+		return this.pathValue;
+	}
+	
+	public void setPathValue(int value) {
+		this.pathValue = value;
+	}
+	
+	public int compareTo(Vertex other) {
+		return this.pathValue - other.getPathValue();
+	}
 
 }

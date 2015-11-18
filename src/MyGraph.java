@@ -135,7 +135,21 @@ public class MyGraph implements Graph {
      */
     public Path shortestPath(Vertex a, Vertex b) {
 
-	// YOUR CODE HERE (you might comment this out this method while doing Part 1)
+    	PriorityQueue<Vertex> pQueue = new PriorityQueue<Vertex>(mainMap.size());
+    	Iterator<Vertex> iterator = mainMap.keySet().iterator();
+    	Set<Vertex> knownVerticies = HashSet<Vertex>();
+    	while(iterator.hasNext()) {
+    		Vertex currentVertex = iterator.next();
+    		if(!currentVertex.equals(a)) {
+    			currentVertex.setPathValue(Integer.MAX_VALUE);
+    		} else {
+    			currentVertex.setPathValue(0);
+    		}
+    		pQueue.add(currentVertex);
+    	}
+    	while(!pQueue.isEmpty()) {
+    		Vertex temp = pQueue.remove();
+    	}
 
     }
     

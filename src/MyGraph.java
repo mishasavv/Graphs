@@ -134,10 +134,9 @@ public class MyGraph implements Graph {
      * @throws IllegalArgumentException if a or b does not exist.
      */
     public Path shortestPath(Vertex a, Vertex b) {
-
     	PriorityQueue<Vertex> pQueue = new PriorityQueue<Vertex>(mainMap.size());
     	Iterator<Vertex> iterator = mainMap.keySet().iterator();
-    	Set<Vertex> knownVerticies = HashSet<Vertex>();
+    	Set<Vertex> known = new HashSet<Vertex>();
     	while(iterator.hasNext()) {
     		Vertex currentVertex = iterator.next();
     		if(!currentVertex.equals(a)) {
@@ -149,9 +148,20 @@ public class MyGraph implements Graph {
     	}
     	while(!pQueue.isEmpty()) {
     		Vertex temp = pQueue.remove();
+    		known.add(temp);
+    		Set<Edge> tempEdges = mainMap.get(temp);
+    		Iterator<Edge> eIt = tempEdges.iterator();
+    		while(eIt.hasNext()){
+    			Edge tempEdge = eIt.next();
+    			//if(!known.contains(tempEdge.getDestination()) && temp.){
+   
+    			//}
+    		}
+    	}
+    		
     	}
 
-    }
+
     
     private boolean checkValidEdge(Edge originalEdge) {
     	Set<Edge> currentVertexSet = mainMap.get(originalEdge.getSource());

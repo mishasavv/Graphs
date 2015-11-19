@@ -1,5 +1,4 @@
 import java.util.*;
-
 import java.io.*;
 
 /**
@@ -38,6 +37,19 @@ public class FindPaths {
 			
 			// YOUR CODE HERE: call shortestPath and print
 			// out the result
+			System.out.println(" Shortest path from " + a.getLabel() +" to " + b.getLabel() +":");
+			Path path = g.shortestPath(a, b);
+			if(path == null){
+				System.out.println("does not exist");			
+			} else {
+				List<Vertex> vertices = path.vertices;
+				String pathString = "";
+				for(Vertex vertex : vertices){
+					pathString += vertex.getLabel() + " ";
+				}
+				System.out.println(pathString);
+				System.out.println(path.cost);
+			}
 		}
 	}
 
@@ -74,14 +86,14 @@ public class FindPaths {
 			}
 		}
 		
-		try {
+		//try {
 			return new MyGraph(v,e);
-		} catch (IllegalWeightException e1) {
+		//} catch (IllegalWeightException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IllegalVertexException e1) {
+		//	e1.printStackTrace();
+		//} catch (IllegalVertexException e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		//	e1.printStackTrace();
+		//}
 	}
 }

@@ -151,14 +151,13 @@ public class MyGraph implements Graph {
     		// If the removed value from the priority queue is the destination Vertex, then the
     		// shortest path has been found
     		if (temp.equals(b)) {
-    			Vertex notTemp = temp;
-    			int finalCost = notTemp.getPathValue();
+    			int finalCost = temp.getPathValue();
     			Stack<Vertex> pathStack = new Stack<Vertex>();
-    			while(notTemp.getPath() != null) {
-    				pathStack.push(notTemp);
-	    			notTemp = notTemp.getPath();
+    			while(temp.getPath() != null) {
+    				pathStack.push(temp);
+	    			temp = temp.getPath();
     			}
-    			pathStack.push(notTemp);
+    			pathStack.push(temp);
     			Stack<Vertex> reverseStack = new Stack<Vertex>();
     			int size = pathStack.size();
     			for(int i = 0; i < size; i++) {

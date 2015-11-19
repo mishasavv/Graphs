@@ -25,10 +25,7 @@ public class MyGraph implements Graph {
     
 	    mainMap = new HashMap<Vertex, Set<Edge>>();
 	    allEdges = new HashSet<Edge>();
-		Iterator<Vertex> vIterator = v.iterator();
-		while(vIterator.hasNext()) {
-
-			Vertex currentVertex = vIterator.next();
+		for(Vertex currentVertex : v) {
 			System.out.println(currentVertex);
 			if(!mainMap.containsKey(currentVertex)) {
 				Set<Edge> emptySet = new HashSet<Edge>();
@@ -88,9 +85,7 @@ public class MyGraph implements Graph {
 			throw new IllegalArgumentException("Vertex " + v + " does not exist");
 		}
 		Collection<Vertex> adjacent = new HashSet<Vertex>();
-		Iterator<Edge> aIterator = mainMap.get(v).iterator();
-		while(aIterator.hasNext()) {
-			Edge currentEdge = aIterator.next();
+		for(Edge currentEdge : mainMap.get(v)) {
 			adjacent.add(currentEdge.getDestination());
 		}
 		return adjacent;
@@ -113,9 +108,7 @@ public class MyGraph implements Graph {
 		if(!mainMap.containsKey(b)) {
 			throw new IllegalArgumentException("Vertex " + b + " does not exist");
 		}
-		Iterator<Edge> aIterator = mainMap.get(a).iterator();
-		while(aIterator.hasNext()) {
-			Edge currentEdge = aIterator.next();
+		for(Edge currentEdge : mainMap.get(a)) {
 			if(currentEdge.getDestination().equals(b)) {
 				return currentEdge.getWeight();
 			}
@@ -135,30 +128,60 @@ public class MyGraph implements Graph {
      */
     public Path shortestPath(Vertex a, Vertex b) {
     	PriorityQueue<Vertex> pQueue = new PriorityQueue<Vertex>(mainMap.size());
-    	Iterator<Vertex> iterator = mainMap.keySet().iterator();
-    	Set<Vertex> known = new HashSet<Vertex>();
-    	while(iterator.hasNext()) {
-    		Vertex currentVertex = iterator.next();
-    		if(!currentVertex.equals(a)) {
-    			currentVertex.setPathValue(Integer.MAX_VALUE);
-    		} else {
+    	Map<String, Vertex> vertexMap = new HashMap<String, Vertex>(mainMap.size());
+    	for(Vertex currentVertex : mainMap.keySet()) {
+    		currentVertex.setKnown(false);
+    		currentVertex.setPathValue(Integer.MAX_VALUE);
+    		currentVertex.setPath(null);
+    		if(currentVertex.equals(a)) {
     			currentVertex.setPathValue(0);
     		}
     		pQueue.add(currentVertex);
     	}
+    	for(Vertex currentVertex : pQueue) {
+    		vertexMap.put(currentVertex.toString(), currentVertex);
+    	}
     	while(!pQueue.isEmpty()) {
-    		Vertex temp = pQueue.remove();
-    		known.add(temp);
+    		Vertex temp = vertexMap.get(pQueue.remove().toString());
+    		// If the removed value from the priority queue is infinity, then there is no way to
+    		// reach that value from the starting Vertex, so return null
+    		if (temp.getPathValue() == Integer.MAX_VALUE) {
+    			return null;
+    		}
+    		// If the removed value from the priority queue is the destination Vertex, then the
+    		// shortest path has been found
+    		if (temp.equals(b)) {
+    			Vertex notTemp = temp;
+    			int finalCost = notTemp.getPathValue();
+    			Stack<Vertex> pathStack = new Stack<Vertex>();
+    			while(notTemp.getPath() != null) {
+    				pathStack.push(notTemp);
+	    			notTemp = notTemp.getPath();
+    			}
+    			pathStack.push(notTemp);
+    			Stack<Vertex> reverseStack = new Stack<Vertex>();
+    			int size = pathStack.size();
+    			for(int i = 0; i < size; i++) {
+    				reverseStack.push(pathStack.pop());
+    			}
+    			Path finalPath = new Path(reverseStack, finalCost);
+    			return finalPath;
+    		}
     		Set<Edge> tempEdges = mainMap.get(temp);
-    		Iterator<Edge> eIt = tempEdges.iterator();
-    		while(eIt.hasNext()){
-    			Edge tempEdge = eIt.next();
-    			//if(!known.contains(tempEdge.getDestination()) && temp.){
-   
-    			//}
+    		for(Edge currentEdge : tempEdges){
+    			Vertex edgeDestination = vertexMap.get(currentEdge.getDestination().toString());
+    			if(!edgeDestination.getKnown()){
+    				if(currentEdge.getWeight() + temp.getPathValue() < edgeDestination.getPathValue()) {
+    					pQueue.remove(edgeDestination);
+    					edgeDestination.setPathValue(currentEdge.getWeight() + temp.getPathValue());
+    					edgeDestination.setPath(temp);
+    					edgeDestination.setKnown(true);
+    					pQueue.add(edgeDestination);
+    				}
+    			}
     		}
     	}
-    		
+    	return null;
     	}
 
 
@@ -166,9 +189,7 @@ public class MyGraph implements Graph {
     private boolean checkValidEdge(Edge originalEdge) {
     	Set<Edge> currentVertexSet = mainMap.get(originalEdge.getSource());
     	if (currentVertexSet.size() != 0) {
-    		Iterator<Edge> edgeIterator = currentVertexSet.iterator();
-    		while(edgeIterator.hasNext()) {
-    			Edge currentEdge = edgeIterator.next();
+    		for(Edge currentEdge : currentVertexSet) {
     			if (originalEdge.getDestination().equals(currentEdge.getDestination()) && 
     					originalEdge.getWeight() != currentEdge.getWeight()) {
     				throw new IllegalArgumentException("Cannot insert edges with same destination "

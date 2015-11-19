@@ -17,7 +17,7 @@ public class FindPaths {
 
 		Scanner console = new Scanner(System.in);
 		Collection<Vertex> v = g.vertices();
-                Collection<Edge> e = g.edges();
+        Collection<Edge> e = g.edges();
 		System.out.println("Vertices are "+v);
 		System.out.println("Edges are "+e);
 		while(true) {

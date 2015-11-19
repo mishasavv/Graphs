@@ -1,10 +1,14 @@
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Representation of a graph vertex
  */
 public class Vertex implements Comparable<Vertex> {
 	private final String label;   // label attached to this vertex
-	private Edge path;
+	private Vertex path;
 	private int pathValue;
+	private boolean known;
 
 	/**
 	 * Construct a new vertex
@@ -15,6 +19,8 @@ public class Vertex implements Comparable<Vertex> {
 			throw new IllegalArgumentException("null");
 		this.label = label;
 		this.path = null;
+		this.pathValue = Integer.MAX_VALUE;
+		this.known = false;
 	}
 
 	/**
@@ -57,12 +63,28 @@ public class Vertex implements Comparable<Vertex> {
 		}
 	}
 	
+	public void setPath(Vertex other) {
+		this.path = other;
+	}
+	
+	public Vertex getPath() {
+		return this.path;
+	}
+
 	public int getPathValue() {
 		return this.pathValue;
 	}
 	
 	public void setPathValue(int value) {
 		this.pathValue = value;
+	}
+	
+	public boolean getKnown() {
+		return this.known;
+	}
+	
+	public void setKnown(boolean other) {
+		this.known = other;
 	}
 	
 	public int compareTo(Vertex other) {
